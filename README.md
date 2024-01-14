@@ -30,7 +30,7 @@ which is already work-in-progress,
 the syntax analyzer with error recovery and AST generation,
 a Symbol Table and Semantic Analyzer.
 
-### Stage 1: Compile to JVM Bytecode
+### Stage 2: Compile to JVM Bytecode
 
 - **Objective**: Implement a code generator for the JVM. 
 - **Status**: [Planned]
@@ -40,7 +40,7 @@ it will be the first target architecture,
 so that the compiler can then be re-implemented in Modula-2 NG,
 and compile itself.
 
-### Stage 4: Zig Code Generator
+### Stage 3: Zig Code Generator
 
 - **Objective**: Implement a Zig code generator to provide Modula-2-like features in the Zig programming language.
 - **Status**: [Planned]
@@ -48,7 +48,7 @@ and compile itself.
 making it a suitable candidate to replicate Modula-2's original features.
 We're planning to develop a Zig code generator to cater to this need.
 
-### Stage 5: Go Code Generator
+### Stage 4: Go Code Generator
 
 - **Objective**: Create a Go code generator to transpile Modula-2 code into the Go programming language.
 - **Status**: [Planned / In Progress / Completed]
@@ -57,7 +57,7 @@ With this stage,
 we aim to provide a pathway to convert Modula-2 code into Go,
 unlocking all the advantages of the Go ecosystem.
 
-### Stage 2: Wasm Code Generator
+### Stage 5: Wasm Code Generator
 
 - **Objective**: Develop a WebAssembly (Wasm) code generator for M2NG.
 - **Status**: [Planned / In Progress / Completed]
