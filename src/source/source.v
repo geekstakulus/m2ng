@@ -32,25 +32,21 @@ pub fn new(text string) Source {
 // advance moves to the next character in the text, updating the current character,
 // line, and column information accordingly.
 pub fn (mut s Source) advance() {
+    if s.current_char == `\n` {
+        s.line++
+        s.column = 1
+    } else {
+        s.column++
+    }
+
     s.index++
+
     if s.index >= s.text.len {
         s.current_char = `\0`
         return
     }
-    s.current_char = s.text[s.index]
 
-    if s.current_char == `\n` {
-        s.line++
-        s.column = 1
-        s.index++
-        if s.index < s.text.len {
-            s.current_char = s.text[s.index]
-        } else {
-            s.current_char = `\0`
-        }
-    } else {
-        s.column++
-    }
+    s.current_char = s.text[s.index]
 }
 
 // character_position returns the current position (line and column) of the character in the text.

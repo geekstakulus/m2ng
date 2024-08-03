@@ -24,8 +24,13 @@ fn test_advance_newline() {
     reader.advance() // l
     reader.advance() // o
     reader.advance() // \n
+    assert reader.current_char == `\n`
+    mut pos := reader.character_position()
+    assert pos.line == 1
+    assert pos.column == 6
+    reader.advance() // W
     assert reader.current_char == `W`
-    pos := reader.character_position()
+    pos = reader.character_position()
     assert pos.line == 2
     assert pos.column == 1
 }
