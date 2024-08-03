@@ -104,12 +104,11 @@ const (
         'MODULE', 'DEFINITION', 'IMPLEMENTATION', 'EXPORT', 'QUALIFIED', 'FROM',
         'IMPORT',
         'NUMBER', 'STRING', 'IDENT',
-        '*', '/', '+', '-', 'OR', '==', '!=', '<', '<=', '>', '>=', '->', 'NOT', ':=',
+        '*', '/', '+', '-', 'OR', '==', '#', '<', '<=', '>', '>=', '^', 'NOT', ':=',
         '.', ',', ':', '...', ')', ']', '}', '(', '[', '{', ';', '|',
 	'EOF'
     ]
     keywords = {
-        'NULL': TokenKind.null,
         'DIV': TokenKind.div,
         'MOD': TokenKind.mod,
         'AND': TokenKind.and,
