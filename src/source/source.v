@@ -11,7 +11,7 @@ pub struct Position {
 pub struct Source {
 pub mut:
     text         string
-    current_char byte
+    current_char u8
     index        int
 mut:
     line   int
