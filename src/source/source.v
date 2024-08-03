@@ -11,9 +11,11 @@ pub struct Position {
 pub struct Source {
 pub mut:
     text         string
-    current_char u8
-    position     Position
+    current_char byte
     index        int
+mut:
+    line   int
+    column int
 }
 
 // new creates a new Source instance initialized with the given text.
@@ -21,8 +23,9 @@ pub fn new(text string) Source {
     return Source{
         text: text
         current_char: if text.len > 0 { text[0] } else { `\0` }
-        position: Position{ line: 1, column: 1 }
         index: 0
+        line: 1
+        column: 1
     }
 }
 
@@ -37,9 +40,21 @@ pub fn (mut s Source) advance() {
     s.current_char = s.text[s.index]
 
     if s.current_char == `\n` {
-        s.position = Position{ line: s.position.line + 1, column: 0 }
+        s.line++
+        s.column = 1
+        s.index++
+        if s.index < s.text.len {
+            s.current_char = s.text[s.index]
+        } else {
+            s.current_char = `\0`
+        }
     } else {
-        s.position = Position{ line: s.position.line, column: s.position.column + 1 }
+        s.column++
     }
+}
+
+// character_position returns the current position (line and column) of the character in the text.
+pub fn (s Source) character_position() Position {
+    return Position{ line: s.line, column: s.column }
 }
 
