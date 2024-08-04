@@ -24,7 +24,7 @@ pub fn new(src source.Source) Scanner {
 pub fn (mut s Scanner) advance() {
     s.skip_whitespace()
     match s.src.current_char {
-        `+`, `-`, `*`, `/`, `%`, `&`, `#`, `=` {
+        `+`, `-`, `*`, `/`, `&`, `#`, `=` {
             s.scan_operator()
         }
         `(`, `)`, `{`, `}`, `[`, `]`, `,`, `.`, `;`, `:`, 0x7f {
@@ -33,9 +33,12 @@ pub fn (mut s Scanner) advance() {
         `0`...`9` {
             s.scan_number()
         }
-        else {
+	`a`...`z`, `A`...`Z` {
             s.scan_identifier_or_keyword()
         }
+        else {
+	    s.scan_illegal_token()
+	}
     }
 }
 
@@ -59,7 +62,6 @@ fn (mut s Scanner) scan_operator() {
         `-` { s.symbol = .minus }
         `*` { s.symbol = .times }
         `/` { s.symbol = .slash }
-        `%` { s.symbol = .null }
         `&` { s.symbol = .and }
         `#` { s.symbol = .neq }
         `=` { s.symbol = .eql }
@@ -189,4 +191,11 @@ fn (mut s Scanner) scan_identifier_or_keyword() {
     }
 
     s.text.write_string(keyword)
+}
+
+fn (mut s Scanner) scan_illegal_token() {
+    s.text.write_byte(s.src.current_char)
+    s.position = s.src.character_position()
+    s.symbol = .null
+    s.src.advance()
 }

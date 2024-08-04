@@ -307,3 +307,163 @@ fn test_scan_identifier() {
     assert s.current_token().kind.is_keyword()
 }
 
+fn test_scan_illegal_tokens() {
+    // Test string with a mix of valid and illegal characters
+    src := source.new('valid _ identifier $ invalid!character % another?identifier @ identifier\\with`backtick')
+    mut s := scanner.new(src)
+
+    // Scan valid identifier
+    s.advance() // valid
+    expected1 := token.Token{
+        kind: .ident,
+        lexeme: 'valid',
+        pos: source.Position{line: 1, column: 1}
+    }
+    assert s.current_token() == expected1
+
+    // Scan illegal character _
+    s.advance() // _
+    expected2 := token.Token{
+        kind: .null,
+        lexeme: '_',
+        pos: source.Position{line: 1, column: 7} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected2
+
+    // Scan valid identifier
+    s.advance() // identifier
+    expected3 := token.Token{
+        kind: .ident,
+        lexeme: 'identifier',
+        pos: source.Position{line: 1, column: 9} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected3
+
+    // Scan illegal character $
+    s.advance() // $
+    expected4 := token.Token{
+        kind: .null,
+        lexeme: '$',
+        pos: source.Position{line: 1, column: 20} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected4
+
+    // Scan invalid identifier up to the next illegal character
+    s.advance() // invalid
+    expected5 := token.Token{
+        kind: .ident,
+        lexeme: 'invalid',
+        pos: source.Position{line: 1, column: 22} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected5
+
+    // Scan illegal character !
+    s.advance() // !
+    expected6 := token.Token{
+        kind: .null,
+        lexeme: '!',
+        pos: source.Position{line: 1, column: 29} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected6
+
+    // Scan valid identifier
+    s.advance() // character
+    expected7 := token.Token{
+        kind: .ident,
+        lexeme: 'character',
+        pos: source.Position{line: 1, column: 30} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected7
+
+    // Scan illegal character %
+    s.advance() // %
+    expected8 := token.Token{
+        kind: .null,
+        lexeme: '%',
+        pos: source.Position{line: 1, column: 40} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected8
+
+    // Scan valid identifier
+    s.advance() // another
+    expected9 := token.Token{
+        kind: .ident,
+        lexeme: 'another',
+        pos: source.Position{line: 1, column: 42} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected9
+
+    // Scan illegal character ?
+    s.advance() // ?
+    expected10 := token.Token{
+        kind: .null,
+        lexeme: '?',
+        pos: source.Position{line: 1, column: 49} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected10
+
+    // Scan valid identifier
+    s.advance() // identifier
+    expected11 := token.Token{
+        kind: .ident,
+        lexeme: 'identifier',
+        pos: source.Position{line: 1, column: 50} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected11
+
+    // Scan illegal character @
+    s.advance() // @
+    expected12 := token.Token{
+        kind: .null,
+        lexeme: '@',
+        pos: source.Position{line: 1, column: 61} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected12
+
+    // Scan valid identifier
+    s.advance() // identifier
+    expected13 := token.Token{
+        kind: .ident,
+        lexeme: 'identifier',
+        pos: source.Position{line: 1, column: 63} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected13
+
+    // Scan illegal character \
+    s.advance() // \
+    expected14 := token.Token{
+        kind: .null,
+        lexeme: '\\',
+        pos: source.Position{line: 1, column: 73} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected14
+
+    // Scan valid identifier
+    s.advance() // with
+    expected15 := token.Token{
+        kind: .ident,
+        lexeme: 'with',
+        pos: source.Position{line: 1, column: 74} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected15
+
+    // Scan illegal character `
+    s.advance() // `
+    expected16 := token.Token{
+        kind: .null,
+        lexeme: '`',
+        pos: source.Position{line: 1, column: 78} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected16
+
+    // Scan valid identifier
+    s.advance() // backtick
+    expected17 := token.Token{
+        kind: .ident,
+        lexeme: 'backtick',
+        pos: source.Position{line: 1, column: 79} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected17
+}
+
+
