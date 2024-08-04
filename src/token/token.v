@@ -48,7 +48,8 @@ pub enum TokenKind as u8 {
     @import
 
     // Literals
-    number
+    int_literal
+    real_literal
     string_
     ident
 
@@ -90,7 +91,7 @@ pub enum TokenKind as u8 {
 const (
     keyword_beg = TokenKind.null
     keyword_end = TokenKind.@import
-    literal_beg = TokenKind.number
+    literal_beg = TokenKind.int_literal
     literal_end = TokenKind.ident
     operator_beg = TokenKind.times
     operator_end = TokenKind.becomes
@@ -103,8 +104,8 @@ const (
         'SET', 'BEGIN', 'CODE', 'CONST', 'TYPE', 'VAR', 'FORWARD', 'PROCEDURE',
         'MODULE', 'DEFINITION', 'IMPLEMENTATION', 'EXPORT', 'QUALIFIED', 'FROM',
         'IMPORT',
-        'NUMBER', 'STRING', 'IDENT',
-        '*', '/', '+', '-', 'OR', '==', '#', '<', '<=', '>', '>=', '^', 'NOT', ':=',
+        'INTEGER LITERAL', 'REAL LITERAL', 'STRING', 'IDENT',
+        '*', '/', '+', '-', 'OR', '=', '#', '<', '<=', '>', '>=', '^', 'NOT', ':=',
         '.', ',', ':', '...', ')', ']', '}', '(', '[', '{', ';', '|',
 	'EOF'
     ]

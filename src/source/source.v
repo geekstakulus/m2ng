@@ -49,6 +49,11 @@ pub fn (mut s Source) advance() {
     s.current_char = s.text[s.index]
 }
 
+// peek returns the next character in the buffer without moving the index
+pub fn (s Source) peek() u8 {
+		return s.text[s.index + 1]
+}
+
 // character_position returns the current position (line and column) of the character in the text.
 pub fn (s Source) character_position() Position {
     return Position{ line: s.line, column: s.column }
