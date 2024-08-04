@@ -229,7 +229,7 @@ fn test_scan_real_number_ending_with_dot() {
 
 fn test_scan_identifier() {
     // Test identifiers
-    src := source.new('identifier anotherIdentifier 123number')
+    src := source.new('identifier anotherIdentifier 123number IF ELSE THEN PROCEDURE')
     mut s := scanner.new(src)
 
     // Scan identifiers
@@ -240,6 +240,7 @@ fn test_scan_identifier() {
         pos: source.Position{line: 1, column: 1}
     }
     assert s.current_token() == expected1
+    assert !s.current_token().kind.is_keyword()
 
     s.advance() // anotherIdentifier
     expected2 := token.Token{
@@ -248,21 +249,61 @@ fn test_scan_identifier() {
         pos: source.Position{line: 1, column: 12} // Adjust column number based on spacing
     }
     assert s.current_token() == expected2
+    assert !s.current_token().kind.is_keyword()
 
-    s.advance() // 123number (treated as identifier in this case)
+    s.advance() // 123number (treated as int_literal number in this case)
     expected3 := token.Token{
         kind: .int_literal,
         lexeme: '123',
         pos: source.Position{line: 1, column: 30} // Adjust column number based on spacing
     }
     assert s.current_token() == expected3
+    assert !s.current_token().kind.is_keyword()
+    assert s.current_token().kind.is_literal()
 
-    s.advance() // 123number (treated as identifier in this case)
+    s.advance() // number (treated as identifier in this case)
     expected4 := token.Token{
         kind: .ident,
         lexeme: 'number',
         pos: source.Position{line: 1, column: 33} // Adjust column number based on spacing
     }
     assert s.current_token() == expected4
+    assert !s.current_token().kind.is_keyword()
+
+    s.advance() // IF(treated as keyword in this case)
+    expected5 := token.Token{
+        kind: .@if,
+        lexeme: 'IF',
+        pos: source.Position{line: 1, column: 40} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected5
+    assert s.current_token().kind.is_keyword()
+
+    s.advance() // ELSE (treated as keyword in this case)
+    expected6 := token.Token{
+        kind: .@else,
+        lexeme: 'ELSE',
+        pos: source.Position{line: 1, column: 43} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected6
+    assert s.current_token().kind.is_keyword()
+
+    s.advance() // THEN (treated as keyword in this case)
+    expected7 := token.Token{
+        kind: .then,
+        lexeme: 'THEN',
+        pos: source.Position{line: 1, column: 48} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected7
+    assert s.current_token().kind.is_keyword()
+
+    s.advance() // PROCEDURE (treated as keyword in this case)
+    expected8 := token.Token{
+        kind: .procedure,
+        lexeme: 'PROCEDURE',
+        pos: source.Position{line: 1, column: 53} // Adjust column number based on spacing
+    }
+    assert s.current_token() == expected8
+    assert s.current_token().kind.is_keyword()
 }
 
