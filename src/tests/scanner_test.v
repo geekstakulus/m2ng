@@ -173,6 +173,9 @@ fn test_scanner_skip_whitespace() {
         pos: source.Position{line: 2, column: 52},
         lexeme: '#'
     }
+
+    s.advance()
+    assert s.current_token().kind == .eof
 }
 
 fn test_scan_integer() {
