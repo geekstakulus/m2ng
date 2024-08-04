@@ -24,10 +24,10 @@ pub fn new(src source.Source) Scanner {
 pub fn (mut s Scanner) advance() {
     s.skip_whitespace()
     match s.src.current_char {
-        `+`, `-`, `*`, `/`, `&`, `#`, `=` {
+        `+`, `-`, `*`, `/`, `&`, `#`, `=`, `~`, `^`, `>`, `<` {
             s.scan_operator()
         }
-        `(`, `)`, `{`, `}`, `[`, `]`, `,`, `.`, `;`, `:`, 0x7f {
+        `(`, `)`, `{`, `}`, `[`, `]`, `,`, `.`, `;`, `:`, 0x7f, `|` {
             s.scan_delimiter()
         }
         `0`...`9` {
@@ -36,6 +36,12 @@ pub fn (mut s Scanner) advance() {
 	`a`...`z`, `A`...`Z` {
             s.scan_identifier_or_keyword()
         }
+        `\0` { // match eof
+	    s.symbol = .eof
+	    s.position = s.src.character_position()
+	    s.text.clear()
+	    s.text.write_byte(`\0`)
+	}
         else {
 	    s.scan_illegal_token()
 	}
@@ -65,6 +71,39 @@ fn (mut s Scanner) scan_operator() {
         `&` { s.symbol = .and }
         `#` { s.symbol = .neq }
         `=` { s.symbol = .eql }
+        `~` { s.symbol = .not }
+        `^` { s.symbol = .arrow }
+        `>` {
+	    if s.src.peek() == `=` {
+		s.position = s.src.character_position()
+		s.src.advance()
+		s.text.write_string('>=')
+		s.symbol = .geq
+		s.src.advance() // move on to the next character
+		return
+	    } else {
+		s.symbol = .gtr
+	    }
+	}
+        `<` {
+	    if s.src.peek() == `=` || s.src.peek() == `>` {
+		s.position = s.src.character_position()
+		s.src.advance()
+
+		if s.src.current_char == `=` {
+		    s.text.write_string('<=')
+		    s.symbol = .leq
+		} else {
+		    s.text.write_string('<>')
+		    s.symbol = .neq
+		}
+
+		s.src.advance() // place the next character in the current_char
+		return
+	    } else {
+		s.symbol = .lss
+	    }
+	}
         else { s.symbol = .null }
     }
     s.position = s.src.character_position()
@@ -83,16 +122,18 @@ fn (mut s Scanner) scan_delimiter() {
         `,` { s.symbol = .comma }
         `.` {
 	    if s.src.peek() == `.` {
-		s.text.write_byte(s.src.current_char)
+		s.position = s.src.character_position()
 		s.src.advance()
+		s.text.write_string('..')
 		s.symbol = .ellipsis
+		s.src.advance() // move ahead
+		return
 	    } else {
 		s.symbol = .period
 	    }
 	}
         `;` { s.symbol = .semicolon }
         `:` { s.symbol = .colon }
-        `\0` { s.symbol = .eof }
         0x7f {
 	    s.symbol = .ellipsis
 	    s.text.write_string('..')
@@ -102,6 +143,7 @@ fn (mut s Scanner) scan_delimiter() {
 	    }
 	    return
 	}
+        `|` { s.symbol = .bar }
         else { s.symbol = .null }
     }
 

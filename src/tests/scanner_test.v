@@ -3,7 +3,7 @@ import source
 import scanner
 
 fn test_scanner_skip_whitespace() {
-    src := source.new('    \t\n  + - * / , . ; : = ( ) [ ] { }')
+    src := source.new('    \t\n  + - * / , . ; : = ( ) [ ] { } ~ | ^ > >= < <= <> #')
     mut s := scanner.new(src)
 
     s.advance()
@@ -109,6 +109,69 @@ fn test_scanner_skip_whitespace() {
         kind: .rbrace,
         pos: source.Position{line: 2, column: 31},
         lexeme: '}'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .not,
+        pos: source.Position{line: 2, column: 33},
+        lexeme: '~'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .bar,
+        pos: source.Position{line: 2, column: 35},
+        lexeme: '|'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .arrow,
+        pos: source.Position{line: 2, column: 37},
+        lexeme: '^'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .gtr,
+        pos: source.Position{line: 2, column: 39},
+        lexeme: '>'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .geq,
+        pos: source.Position{line: 2, column: 41},
+        lexeme: '>='
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .lss,
+        pos: source.Position{line: 2, column: 44},
+        lexeme: '<'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .leq,
+        pos: source.Position{line: 2, column: 46},
+        lexeme: '<='
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .neq,
+        pos: source.Position{line: 2, column: 49},
+        lexeme: '<>'
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .neq,
+        pos: source.Position{line: 2, column: 52},
+        lexeme: '#'
     }
 }
 
