@@ -42,6 +42,9 @@ pub fn (mut s Scanner) advance() {
 	    s.text.clear()
 	    s.text.write_byte(`\0`)
 	}
+	`'`, `"` {
+            s.scan_string_or_char_literal()
+        }
         else {
 	    s.scan_illegal_token()
 	}
@@ -241,3 +244,37 @@ fn (mut s Scanner) scan_illegal_token() {
     s.symbol = .null
     s.src.advance()
 }
+
+fn (mut s Scanner) scan_string_or_char_literal() {
+    delim := s.src.current_char
+    s.position = s.src.character_position()
+    mut buffer := strings.new_builder(100)
+    buffer.write_byte(delim) // Include opening delimiter
+    s.src.advance()
+
+    for s.src.current_char != delim {
+        if s.src.current_char == `\n` || s.src.current_char == 0 {
+            eprintln('Unterminated string or character literal')
+            return
+        } else if s.src.current_char < ` ` {
+            eprintln('Control characters are not allowed inside a string or character literal')
+            return
+        }
+        buffer.write_byte(s.src.current_char)
+        s.src.advance()
+    }
+
+    buffer.write_byte(delim) // Include closing delimiter
+    s.src.advance()
+
+    lexeme := buffer.str()
+    s.text.write_string(lexeme)
+
+    if lexeme.len == 3 { // Two delimiters and one character
+        s.symbol = .char_literal
+    } else {
+        s.symbol = .string_
+    }
+}
+
+

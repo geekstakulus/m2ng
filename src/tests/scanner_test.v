@@ -533,3 +533,50 @@ fn test_scan_illegal_tokens() {
 }
 
 
+fn test_scan_string_or_char_literal() {
+    src := source.new('"Hello, World!" \'A\' "Another string" \'B\' \'Hello again\' "C"')
+    mut s := scanner.new(src)
+
+    s.advance() // "Hello, World!"
+    assert s.current_token() == token.Token{
+        kind: .string_,
+        lexeme: '"Hello, World!"',
+        pos: source.Position{line: 1, column: 1}
+    }
+
+    s.advance() // 'A'
+    assert s.current_token() == token.Token{
+        kind: .char_literal,
+        lexeme: '\'A\'',
+        pos: source.Position{line: 1, column: 17}
+    }
+
+    s.advance() // "Another string"
+    assert s.current_token() == token.Token{
+        kind: .string_,
+        lexeme: '"Another string"',
+        pos: source.Position{line: 1, column: 21}
+    }
+
+    s.advance() // 'B'
+    assert s.current_token() == token.Token{
+        kind: .char_literal,
+        lexeme: '\'B\'',
+        pos: source.Position{line: 1, column: 38}
+    }
+
+    s.advance() // 'Hello again'
+    assert s.current_token() == token.Token{
+        kind: .string_,
+        lexeme: '\'Hello again\'',
+        pos: source.Position{line: 1, column: 42}
+    }
+
+    s.advance() // "C"
+    assert s.current_token() == token.Token{
+        kind: .char_literal,
+        lexeme: '"C"',
+        pos: source.Position{line: 1, column: 56}
+    }
+}
+

@@ -52,6 +52,7 @@ pub enum TokenKind as u8 {
     real_literal
     string_
     ident
+    char_literal
 
     // Operators
     times
@@ -92,7 +93,7 @@ const (
     keyword_beg = TokenKind.null
     keyword_end = TokenKind.@import
     literal_beg = TokenKind.int_literal
-    literal_end = TokenKind.ident
+    literal_end = TokenKind.char_literal
     operator_beg = TokenKind.times
     operator_end = TokenKind.becomes
     delimiter_beg = TokenKind.period
@@ -104,7 +105,7 @@ const (
         'SET', 'BEGIN', 'CODE', 'CONST', 'TYPE', 'VAR', 'FORWARD', 'PROCEDURE',
         'MODULE', 'DEFINITION', 'IMPLEMENTATION', 'EXPORT', 'QUALIFIED', 'FROM',
         'IMPORT',
-        'INTEGER LITERAL', 'REAL LITERAL', 'STRING', 'IDENT',
+        'INTEGER LITERAL', 'REAL LITERAL', 'STRING', 'IDENT', 'CHARACTER LITERAL',
         '*', '/', '+', '-', 'OR', '=', '#', '<', '<=', '>', '>=', '^', 'NOT', ':=',
         '.', ',', ':', '...', ')', ']', '}', '(', '[', '{', ';', '|',
 	'EOF'
