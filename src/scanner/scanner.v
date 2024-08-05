@@ -27,8 +27,17 @@ pub fn (mut s Scanner) advance() {
         `+`, `-`, `*`, `/`, `&`, `#`, `=`, `~`, `^`, `>`, `<` {
             s.scan_operator()
         }
-        `(`, `)`, `{`, `}`, `[`, `]`, `,`, `.`, `;`, `:`, 0x7f, `|` {
+        `)`, `{`, `}`, `[`, `]`, `,`, `.`, `;`, `:`, 0x7f, `|` {
             s.scan_delimiter()
+        }
+        `(` {
+	    if s.src.peek() == `*` {
+		s.src.advance() // advance to '*'
+		s.scan_comment() // skip comments
+		s.advance() // get the next token
+	    } else {
+		s.scan_delimiter()
+	    }
         }
         `0`...`9` {
             s.scan_number()
@@ -277,4 +286,31 @@ fn (mut s Scanner) scan_string_or_char_literal() {
     }
 }
 
+fn (mut s Scanner) scan_comment() {
+    s.src.advance() // consume '*'
 
+    for {
+        for s.src.current_char != `*` && s.src.current_char > `\0` {
+            if s.src.current_char == `(` {
+		s.src.advance()
+		if s.src.current_char == `*` {
+		    s.scan_comment()
+		}
+            } else {
+		s.src.advance()
+	    }
+        }
+
+        s.src.advance()
+
+	if s.src.current_char == `)` || s.src.current_char == `\0` {
+	    break
+	}
+    }
+
+    if s.src.current_char == `\0` {
+	eprintln('comment without a closing *)')
+    } else {
+	s.src.advance() // consume ')'
+    }
+}

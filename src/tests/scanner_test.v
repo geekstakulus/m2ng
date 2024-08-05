@@ -580,3 +580,21 @@ fn test_scan_string_or_char_literal() {
     }
 }
 
+fn test_scan_comment() {
+    src := source.new('(* This is a comment *) (* Nested (* comment *) *) myid (* another comment *) 123')
+    mut s := scanner.new(src)
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .ident,
+        lexeme: 'myid',
+        pos: source.Position{line: 1, column: 52}
+    }
+
+    s.advance()
+    assert s.current_token() == token.Token{
+        kind: .int_literal,
+        lexeme: '123',
+        pos: source.Position{line: 1, column: 79}
+    }
+}
