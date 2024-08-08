@@ -5,7 +5,7 @@ import source
 // TokenKind represents the different kinds of tokens in Modula-2.
 pub enum TokenKind as u8 {
     // Keywords
-    null
+    invalid
     div
     mod
     and
@@ -90,7 +90,7 @@ pub enum TokenKind as u8 {
 
 // Constants for token group boundaries
 const (
-    keyword_beg = TokenKind.null
+    keyword_beg = TokenKind.invalid
     keyword_end = TokenKind.@import
     literal_beg = TokenKind.int_literal
     literal_end = TokenKind.char_literal

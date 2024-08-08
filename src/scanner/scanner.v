@@ -116,7 +116,7 @@ fn (mut s Scanner) scan_operator() {
 		s.symbol = .lss
 	    }
 	}
-        else { s.symbol = .null }
+        else { s.symbol = .invalid }
     }
     s.position = s.src.character_position()
     s.text.write_byte(s.src.current_char)
@@ -156,7 +156,7 @@ fn (mut s Scanner) scan_delimiter() {
 	    return
 	}
         `|` { s.symbol = .bar }
-        else { s.symbol = .null }
+        else { s.symbol = .invalid }
     }
 
     s.position = s.src.character_position()
@@ -250,7 +250,7 @@ fn (mut s Scanner) scan_identifier_or_keyword() {
 fn (mut s Scanner) scan_illegal_token() {
     s.text.write_byte(s.src.current_char)
     s.position = s.src.character_position()
-    s.symbol = .null
+    s.symbol = .invalid
     s.src.advance()
 }
 

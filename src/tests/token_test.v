@@ -1,7 +1,7 @@
 import token
 
 fn test_is_keyword() {
-    assert token.TokenKind.null.is_keyword()
+    assert token.TokenKind.invalid.is_keyword()
     assert token.TokenKind.div.is_keyword()
     assert !token.TokenKind.int_literal.is_keyword()
     assert !token.TokenKind.plus.is_keyword()
@@ -14,7 +14,7 @@ fn test_is_literal() {
     assert token.TokenKind.real_literal.is_literal()
     assert token.TokenKind.string_.is_literal()
     assert token.TokenKind.ident.is_literal()
-    assert !token.TokenKind.null.is_literal()
+    assert !token.TokenKind.invalid.is_literal()
     assert !token.TokenKind.plus.is_literal()
     assert !token.TokenKind.period.is_literal()
     assert !token.TokenKind.eof.is_literal()
@@ -29,7 +29,7 @@ fn test_is_operator() {
     assert token.TokenKind.neq.is_operator()
     assert !token.TokenKind.int_literal.is_operator()
     assert !token.TokenKind.real_literal.is_operator()
-    assert !token.TokenKind.null.is_operator()
+    assert !token.TokenKind.invalid.is_operator()
     assert !token.TokenKind.period.is_operator()
     assert !token.TokenKind.eof.is_operator()
 }
@@ -44,7 +44,7 @@ fn test_is_delimiter() {
     assert !token.TokenKind.int_literal.is_delimiter()
     assert !token.TokenKind.real_literal.is_delimiter()
     assert !token.TokenKind.plus.is_delimiter()
-    assert !token.TokenKind.null.is_delimiter()
+    assert !token.TokenKind.invalid.is_delimiter()
     assert !token.TokenKind.eof.is_delimiter()
 }
 

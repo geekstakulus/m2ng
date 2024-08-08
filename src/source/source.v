@@ -51,7 +51,10 @@ pub fn (mut s Source) advance() {
 
 // peek returns the next character in the buffer without moving the index
 pub fn (s Source) peek() u8 {
-		return s.text[s.index + 1]
+    if s.index + 1 >= s.text.len {
+	return `\0`
+    }
+    return s.text[s.index + 1]
 }
 
 // character_position returns the current position (line and column) of the character in the text.

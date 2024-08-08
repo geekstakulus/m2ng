@@ -390,7 +390,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character _
     s.advance() // _
     expected2 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '_',
         pos: source.Position{line: 1, column: 7} // Adjust column number based on spacing
     }
@@ -408,7 +408,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character $
     s.advance() // $
     expected4 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '$',
         pos: source.Position{line: 1, column: 20} // Adjust column number based on spacing
     }
@@ -426,7 +426,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character !
     s.advance() // !
     expected6 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '!',
         pos: source.Position{line: 1, column: 29} // Adjust column number based on spacing
     }
@@ -444,7 +444,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character %
     s.advance() // %
     expected8 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '%',
         pos: source.Position{line: 1, column: 40} // Adjust column number based on spacing
     }
@@ -462,7 +462,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character ?
     s.advance() // ?
     expected10 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '?',
         pos: source.Position{line: 1, column: 49} // Adjust column number based on spacing
     }
@@ -480,7 +480,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character @
     s.advance() // @
     expected12 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '@',
         pos: source.Position{line: 1, column: 61} // Adjust column number based on spacing
     }
@@ -498,7 +498,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character \
     s.advance() // \
     expected14 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '\\',
         pos: source.Position{line: 1, column: 73} // Adjust column number based on spacing
     }
@@ -516,7 +516,7 @@ fn test_scan_illegal_tokens() {
     // Scan illegal character `
     s.advance() // `
     expected16 := token.Token{
-        kind: .null,
+        kind: .invalid,
         lexeme: '`',
         pos: source.Position{line: 1, column: 78} // Adjust column number based on spacing
     }
